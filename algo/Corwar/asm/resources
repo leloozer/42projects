@@ -1,0 +1,181 @@
+16 REGISTRES MAXIMUM
+
+Registre 	=> sur 2 en hexa, défini de 0 à 16
+Indirect   	=> sur 4 max: 0 à 65536 et boucle && Si negatif x then (max - x)
+Direct %	=> sur 8 max : 0 à 4294967295 et boucle && Si negatif x then (max - x)
+
+OP_CODES:
+
+01 - live
+02 - ld
+03 - st
+04 - add
+05 - sub
+06 - and
+07 - or
+08 - xor
+09 - zjmp
+0a - ldi
+0b - sti
+0c - fork
+0d - lld
+0e - lldi
+0f - lfork
+10 - aff
+
+/*********** Instructions ***************/
+
+Pour les pourcentages
+
+sur 2 quand l'instruction est:
+lfork, fork, sti, zjmp, ldi, lldi
+
+sur 4 pour les autres
+
+/************ Adresses / Labels ************* /
+
+Calculer la distance selon la regle suivante:
+
+APPEL APRES LABEL: ffff ou ffffffff (en fonction de l'instruction avant)
+Le calcul demarre a la fin de la ligne du dessus
+
+Une instruction: -1
+Un OCP: -1
+Un registre: -1
+Un indirect: -2
+Un direct %: -4 ou -2 (lfork, fork, sti, zjmp, ldi, lldi)
+
+APPEL AVANT LABEL 0000 ou 00000000 (en fonction de l'instruction avant)
+Le calcul demarre au debut de la ligne, sur l'instruction
+
+Une instruction: +1
+Un OCP: +1
+Un registre: +1
+Un indirect: +2
+Un direct %: +4 ou +2 si (lfork, fork, sti, zjmp, ldi, lldi = op_code 9 a 15)
+
+/* ********** Pour les OCP ********** /
+
+Premier parametre 
+
+r: 40,
+%: 80,
+ : C0,
+
+Second parametre (+)
+
+r: 10
+%: 20
+ : 30
+
+Troisieme paramètre (+)
+
+r: 4
+%: 8
+ : C
+
+Result sur 2 caractères
+
+/* ********** Pour les parametres *******/
+
+lfork, fork, sti, zjmp, ldi, lldi : Direct % sur 4
+Registre toujours sur 2
+Indirect toujours sur 4
+
+/* ******** AFF ******** */
+
+registre only
+aff = 10 40
+numero du registre en hexa sur 2 caracteres, max 16
+
+aff r3
+1040 03
+
+aff r16
+1040 10
+
+aff r0
+1040 0a
+
+/* ********* LIVE ******* */
+
+live = 01
+
+- Modulo 4294967295
+- Si negatif x then (max - x)
+- Prend que avec un %
+
+live %1
+0100 0000 01
+
+live %intmax
+017f ffff ff
+
+live %4294967295
+01ff ffff ff
+
+
+/* ******** AND ******** */
+
+and = 06
+
+- 3e parametre registre obligatoire
+- * & * => registre
+
+- pas de 00 => r0, 00 02 => 2, 00 00 02 => %x
+
+and r2, %3, r2
+0664 0200 0000 0302 
+
+and 2, %3, r2
+06e4 0002 0000 0003 02
+
+and 12, %3, r2
+06e4 000c 0000 0003 02
+
+and %2, %3, r2
+06a4 0000 0002 0000 0003 02
+
+and %12, %3, r2
+06a4 0000 000c 0000 0003 02
+
+and %12, 3, r2
+06b4 0000 000c 0003 02
+
+
+/* ******** XOR ******** */
+
+xor = 08
+
+Resultat => COMME AND
+
+xor %2, %3, r2
+08a4 0000 0002 0000 0003 02
+
+
+/* ******** OR ******** */
+
+or = 07
+
+Resultat => COMME AND
+
+or %2, %3, r2
+07a4 0000 0002 0000 0003 02
+
+
+/* ******** ST ******** */
+
+st = 03
+3e paire = num registre
+
+st r3, 0
+0370 0300 00
+
+st r2, 0
+0370 0200 00
+
+st r2, 42
+0370 0200 2a
+
+st r2, r2
+0350 0202
