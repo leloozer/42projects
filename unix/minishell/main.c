@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:26:25 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/06/29 14:15:56 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/07 14:00:05 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,17 @@ int main (int argc, char **argv, char **e)
 //	tcsetattr(0, TCSANOW, &new_term);
 //	if (signal(SIGINT, ft_handle_sig) == SIG_ERR)
 //		ft_putendl("Error");
+	if (e[i] == NULL)
+	{
+		ft_printf("\033[031mERROR\033[0m\n");
+		return (0);
+	}
 	while (e[i])
 	{
 		if (i == 0)
-		{	
 			ft_firstpushback(env, e[i]);
-		}
 		else
-		{
 			ft_pushback(env, e[i]);
-		}
 		i++;
 	}
 	tab = ft_envtab(env);

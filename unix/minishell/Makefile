@@ -6,7 +6,7 @@
 #    By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/17 14:26:54 by mszczesn          #+#    #+#              #
-#    Updated: 2016/06/29 13:44:50 by mszczesn         ###   ########.fr        #
+#    Updated: 2016/07/07 14:12:18 by mszczesn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 
 CFLAGS += -Wall -Werror -Wextra -g
 
-SRC =  main.c prompt.c function.c builtin.c
+SRC =  main.c prompt.c function.c builtin.c builtin2.c
 
 HEADER = minishell.h
 

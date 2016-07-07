@@ -6,20 +6,20 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:33:22 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/06/28 21:05:37 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/07 15:05:24 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_lenenv(t_env *env)
+int		ft_lenenv(t_env *env)
 {
-	t_env *tmp;
-	int 	i;
+	t_env	*tmp;
+	int		i;
 
 	i = 0;
 	tmp = env;
-	while(env)
+	while (env)
 	{
 		i++;
 		env = env->next;
@@ -28,18 +28,18 @@ int	ft_lenenv(t_env *env)
 	return (i);
 }
 
-char *ft_add(char *name, char *result)
+char	*ft_add(char *name, char *result)
 {
 	char	*src;
-	int	len;
-	int	i;
-	int	j;
-	
+	int		len;
+	int		i;
+	int		j;
+
 	i = 0;
 	j = 0;
 	len = ft_strlen(name) + ft_strlen(result) + 1;
 	src = (char *)malloc(sizeof(char) * len + 1);
-	while(name[i])
+	while (name[i])
 	{
 		src[i] = name[i];
 		i++;
@@ -55,11 +55,11 @@ char *ft_add(char *name, char *result)
 	return (src);
 }
 
-char **ft_envtab(t_env *env)
+char	**ft_envtab(t_env *env)
 {
-	char **tab;
-	int	i;
-	int	len;
+	char	**tab;
+	int		i;
+	int		len;
 
 	i = 0;
 	len = ft_lenenv(env);
@@ -73,5 +73,5 @@ char **ft_envtab(t_env *env)
 		i++;
 	}
 	tab[i] = NULL;
-return (tab);
+	return (tab);
 }
