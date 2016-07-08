@@ -6,11 +6,39 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:26:25 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/07 14:00:05 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/08 16:25:06 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_free(char **tab)
+{
+	int		i;
+
+	i = 0;
+	while (tab[i])
+	{
+		if (tab[i] != NULL)
+			free(tab[i]);
+		i++;
+	}
+}
+
+void	ft_freeenv(t_env *env)
+{
+	t_env *tmp;
+
+	while (env)
+	{
+		tmp = env;
+		env = env->next;
+		if (tmp->name != NULL)
+			free(tmp->name);
+		if (tmp->result != NULL)
+			free(tmp->result);
+	}
+}
 
 void	ft_firstpushback(t_env *env, char *line)
 {
@@ -25,15 +53,13 @@ void	ft_firstpushback(t_env *env, char *line)
 
 void	ft_pushback(t_env *env, char *line)
 {
-	t_env *new;
-	t_env *tmp;	
-	char **value;
+	t_env	*new;
+	t_env	*tmp;
+	char	**value;
 
 	tmp = env;
-	while (env->next)
-	{
+	while (env->next != NULL)
 		env = env->next;
-	}
 	new = (t_env *)malloc(sizeof(t_env *));
 	value = ft_strsplit(line, '=');
 	new->name = ft_strdup(value[0]);
@@ -42,35 +68,22 @@ void	ft_pushback(t_env *env, char *line)
 	new->prev = env;
 	env->next = new;
 	env = tmp;
+	ft_free(value);
 }
 
-void	ft_handle_sig(int sig)
+int		main(int argc, char **argv, char **e)
 {
-	if (sig == SIGINT)
-		return;
-}
-
-int main (int argc, char **argv, char **e)
-{
-	(void)argc;
-	(void)argv;
-	int	i;
-//	struct termios	term;
-//	struct termios	new_term;
+	int		i;
 	t_env	*env;
 	char	**tab;
 
 	i = 0;
+	(void)argc;
+	(void)argv;
 	env = (t_env *)malloc(sizeof(t_env));
-//	tcgetattr(0, &term);
-//	new_term = term;
-//	new_term.c_cc[VEOF] = 3;
-//	tcsetattr(0, TCSANOW, &new_term);
-//	if (signal(SIGINT, ft_handle_sig) == SIG_ERR)
-//		ft_putendl("Error");
 	if (e[i] == NULL)
 	{
-		ft_printf("\033[031mERROR\033[0m\n");
+		ft_printf("\033[031mNO ENV\033[0m\n");
 		return (0);
 	}
 	while (e[i])
@@ -83,5 +96,5 @@ int main (int argc, char **argv, char **e)
 	}
 	tab = ft_envtab(env);
 	ft_prompt(env, tab);
-	return  (0);
+	return (0);
 }

@@ -6,14 +6,14 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 16:22:13 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/06/27 12:38:36 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/08 12:54:52 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# define BUFF_SIZE 5000
+# define BUFF_SIZE 1
 
 # include <string.h>
 # include <unistd.h>

@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:23:30 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/06/29 16:15:41 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/08 15:52:03 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,32 @@
 # include <sys/wait.h>
 # include <termios.h>
 
-typedef struct s_env
+typedef struct		s_env
 {
-	char *name;
-	char *result;
-	struct s_env *next;
-	struct s_env *prev;
-}	t_env;
+	char			*name;
+	char			*result;
+	struct s_env	*next;
+	struct s_env	*prev;
+}					t_env;
 
-// main.c
+void				ft_free(char **tab);
+void				ft_freeenv(t_env *env);
+void				ft_pushback(t_env *env, char *line);
+void				ft_firstpushback(t_env *env, char *line);
 
-void	ft_free(char **tab);
-void	ft_pushback(t_env *env, char *line);
-void	ft_firstpushback(t_env *env, char *line);
+void				ft_prompt(t_env *env, char **tabenv);
+int					ft_built(char **tab);
+t_env				*ft_gobuilt(t_env *env, char **tab, char *str);
+char				**ft_thepath(t_env *env);
+void				ft_exit(char **tab, char **cmd, char **path, t_env *env);
+char				*ft_checkpath(char **path, char **tab, char **tabenv);
 
-// prompt.c
+void				ft_forcd(t_env *env, char **tab);
+void				ft_forenv(t_env *env);
+void				ft_forecho(char *line);
+t_env				*ft_forsetenv(t_env *env, char **tab);
+t_env				*ft_forunsetenv(t_env *env, char **tab);
 
-void	ft_prompt(t_env *env, char **tabenv);
-
-// builtin.c
-
-void	ft_forcd(t_env *env, char **tab);
-void	ft_forenv(t_env *env, char **tab);
-void	ft_forecho(char *line);
-t_env	*ft_forsetenv(t_env *env, char **tab);
-t_env	*ft_forunsetenv(t_env *env, char **tab);
-
-// function.c
-
-char **ft_envtab(t_env *env);
+char				**ft_envtab(t_env *env);
 
 #endif

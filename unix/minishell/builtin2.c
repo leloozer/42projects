@@ -6,11 +6,24 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 14:12:26 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/07 16:32:06 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/08 16:51:44 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_forenv(t_env *env)
+{
+	t_env *tmp;
+
+	tmp = env;
+	while (env)
+	{
+		ft_printf("%s=%s\n", env->name, env->result);
+		env = env->next;
+	}
+	env = tmp;
+}
 
 void	ft_forecho(char *line)
 {
@@ -61,8 +74,13 @@ void	ft_forcd3(char *new, t_env *env, char *path, char **tab)
 char	*ft_forcd2(char *home, char *path, char *oldpwd, char **tab)
 {
 	char	*new;
-	
+
 	new = NULL;
+	if (path == NULL || home == NULL || oldpwd == NULL)
+	{
+		ft_printf("\033[031mERROR ENV\033[0m\n");
+		exit(0);
+	}
 	if (tab[1] == NULL)
 		new = ft_strdup(home);
 	else if (ft_strcmp(tab[1], "~") == 0)
@@ -90,6 +108,9 @@ void	ft_forcd(t_env *env, char **tab)
 	t_env	*tmp;
 
 	tmp = env;
+	path = NULL;
+	home = NULL;
+	oldpwd = NULL;
 	while (env)
 	{
 		if (ft_strcmp(env->name, "PWD") == 0)
@@ -103,5 +124,4 @@ void	ft_forcd(t_env *env, char **tab)
 	env = tmp;
 	new = ft_forcd2(home, path, oldpwd, tab);
 	ft_forcd3(new, env, path, tab);
-	ft_free(tab);
 }

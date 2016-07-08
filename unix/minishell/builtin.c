@@ -6,25 +6,11 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/28 16:02:18 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/07 14:22:58 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/08 16:48:16 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ft_forenv(t_env *env, char **tab)
-{
-	t_env *tmp;
-
-	tmp = env;
-	ft_free(tab);
-	while (env)
-	{
-		ft_printf("%s=%s\n", env->name, env->result);
-		env = env->next;
-	}
-	env = tmp;
-}
 
 int		ft_forsetenv2(t_env *env, char **tab)
 {
@@ -70,15 +56,46 @@ t_env	*ft_forsetenv(t_env *env, char **tab)
 	return (env);
 }
 
-void	ft_forunsetenv2(t_env *tmp2)
+int		ft_forunsetenv3(char *str)
+{
+	if (str == NULL)
+	{
+		ft_printf("\033[031munsetenv: usage unsetenv [name]\033[0m\n");
+		return (1);
+	}
+	if (ft_strcmp(str, "PATH") == 0)
+	{
+		ft_printf("\033[031mNO FREE PATH PLEASE !!!!!!!!\033[0m\n");
+		exit(0);
+	}
+	return (0);
+}
+
+t_env	*ft_forunsetenv2(t_env *tmp2)
 {
 	t_env	*tmp3;
 
-	tmp3 = tmp2->prev;
-	tmp3->next = tmp2->next;
-	free(tmp2->name);
-	free(tmp2->result);
-	free(tmp2->prev);
+	if (tmp2->prev != NULL)
+	{
+		tmp3 = tmp2->prev;
+		tmp3->next = tmp2->next;
+		tmp3->prev = tmp2->prev->prev;
+	}
+	else
+	{
+		tmp3 = tmp2->next;
+		tmp3->prev = NULL;
+	}
+	if (tmp2->name != NULL)
+		free(tmp2->name);
+	if (tmp2->result != NULL)
+		free(tmp2->result);
+	free(tmp2);
+	while (tmp3->prev != NULL)
+	{
+		tmp3 = tmp3->prev;
+	}
+	return (tmp3);
 }
 
 t_env	*ft_forunsetenv(t_env *env, char **tab)
@@ -89,11 +106,8 @@ t_env	*ft_forunsetenv(t_env *env, char **tab)
 
 	tmp = env;
 	ici = 0;
-	if (tab[1] == NULL)
-	{
-		ft_printf("\033[031munsetenv: usage unsetenv [name]\033[0m\n");
+	if (ft_forunsetenv3(tab[1]) == 1)
 		return (env);
-	}
 	while (env)
 	{
 		if ((ft_strcmp(env->name, tab[1]) == 0))
@@ -104,7 +118,8 @@ t_env	*ft_forunsetenv(t_env *env, char **tab)
 		env = env->next;
 	}
 	if (ici == 1)
-		ft_forunsetenv2(tmp2);
-	env = tmp;
+		env = ft_forunsetenv2(tmp2);
+	if (ici == 0)
+		env = tmp;
 	return (env);
 }
