@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:27:41 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/08 16:37:28 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/11 14:29:31 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,18 @@ void	ft_whileprompt(t_env *env, char **tabenv, char **path, char *path2)
 	char	**cmd;
 	char	**tab;
 	int		i;
+	int		j;
 
 	while (42)
 	{
 		cmd = ft_cmd();
 		i = 0;
+		j = 0;
 		while (cmd[i])
 		{
 			tab = ft_strsplit(cmd[i], ' ');
+			if (ft_strcmp("env", tab[0]) == 0 && tab[1])
+				tab = ft_envspe(tab);
 			if (ft_built(tab) == 1)
 				env = ft_gobuilt(env, tab, cmd[i]);
 			else if (ft_strcmp(tab[0], "exit") == 0)

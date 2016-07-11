@@ -6,11 +6,25 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:33:22 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/07 15:05:24 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/11 15:44:33 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_pushsetenv(t_env *env, char *str, char *str2)
+{
+	t_env *new;
+
+	new = (t_env *)malloc(sizeof(t_env));
+	while (env->next != NULL)
+		env = env->next;
+	new->next = NULL;
+	new->name = ft_strdup(str);
+	new->result = ft_strdup(str2);
+	new->prev = env;
+	env->next = new;
+}
 
 int		ft_lenenv(t_env *env)
 {
@@ -26,6 +40,20 @@ int		ft_lenenv(t_env *env)
 	}
 	env = tmp;
 	return (i);
+}
+
+char	**ft_envspe(char **tab)
+{
+	int j;
+
+	j = 1;
+	while (tab[j])
+	{
+		tab[j - 1] = ft_strdup(tab[j]);
+		j++;
+	}
+	tab[j - 1] = NULL;
+	return (tab);
 }
 
 char	*ft_add(char *name, char *result)

@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 14:12:26 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/08 16:51:44 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/11 15:42:57 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ char	*ft_forcd2(char *home, char *path, char *oldpwd, char **tab)
 		new = ft_strdup(home);
 	else if (ft_strcmp(tab[1], "-") == 0)
 		new = ft_strdup(oldpwd);
-	else if (ft_strcmp(tab[1], "/") == 0)
-		new = ft_strdup("/");
 	else if ((tab[1] != NULL) && (ft_strcmp(tab[1], "~") != 0) &&
-			(ft_strcmp(tab[1], "-") != 0) && (ft_strcmp(tab[1], "/") != 0))
+			(ft_strcmp(tab[1], "-") != 0))
 	{
+		if (chdir(tab[1]) != -1)
+			return (tab[1]);
 		new = ft_strjoin(path, "/");
 		new = ft_strjoin(new, tab[1]);
 	}

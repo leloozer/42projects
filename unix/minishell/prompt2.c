@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/08 11:51:55 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/08 16:48:51 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/11 15:50:18 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,23 @@ char	*ft_checkpath(char **path, char **tab, char **tabenv)
 	char	*path2;
 	int		j;
 
-	path2 = NULL;
+	path2 = ft_strdup(tab[0]);
 	j = 0;
-	while (path[j])
-	{
-		path2 = ft_strjoin(path[j], "/");
-		path2 = ft_strjoin(path2, tab[0]);
-		if (execve(path2, tab, tabenv) == -1)
-		{
-			free(path2);
-			j++;
-		}
-	}
 	if (execve(path2, tab, tabenv) == -1)
-		ft_printf("\033[031mcommand not found: %s\033[0m\n", tab[0]);
-	exit(0);
+	{
+		while (path[j])
+		{
+			path2 = ft_strjoin(path[j], "/");
+			path2 = ft_strjoin(path2, tab[0]);
+			if (execve(path2, tab, tabenv) == -1)
+			{
+				free(path2);
+				j++;
+			}
+		}
+		if (execve(path2, tab, tabenv) == -1)
+			ft_printf("\033[031mcommand not found: %s\033[0m\n", tab[0]);
+		exit(0);
+	}
 	return (path2);
 }

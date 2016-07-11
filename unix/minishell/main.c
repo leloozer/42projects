@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:26:25 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/08 16:25:06 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/11 14:57:39 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_free(char **tab)
 	{
 		if (tab[i] != NULL)
 			free(tab[i]);
+		tab[i] = NULL;
 		i++;
 	}
 }
@@ -37,6 +38,8 @@ void	ft_freeenv(t_env *env)
 			free(tmp->name);
 		if (tmp->result != NULL)
 			free(tmp->result);
+		free(tmp);
+		tmp = NULL;
 	}
 }
 
@@ -45,8 +48,8 @@ void	ft_firstpushback(t_env *env, char *line)
 	char	**value;
 
 	value = ft_strsplit(line, '=');
-	env->name = ft_strdup(value[0]);
-	env->result = ft_strdup(value[1]);
+	env->name = value[0];
+	env->result = value[1];
 	env->next = NULL;
 	env->prev = NULL;
 }
@@ -62,13 +65,14 @@ void	ft_pushback(t_env *env, char *line)
 		env = env->next;
 	new = (t_env *)malloc(sizeof(t_env *));
 	value = ft_strsplit(line, '=');
-	new->name = ft_strdup(value[0]);
-	new->result = ft_strdup(value[1]);
+	new->name = value[0];
+	new->result = value[1];
 	new->next = NULL;
 	new->prev = env;
 	env->next = new;
 	env = tmp;
 	ft_free(value);
+	value = NULL;
 }
 
 int		main(int argc, char **argv, char **e)

@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/28 16:02:18 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/08 16:48:16 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/11 15:08:58 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_env	*ft_forsetenv(t_env *env, char **tab)
 {
 	t_env	*tmp;
 	int		ici;
-	char	*line;
 
 	tmp = env;
 	ici = 0;
@@ -47,10 +46,8 @@ t_env	*ft_forsetenv(t_env *env, char **tab)
 	ici = ft_forsetenv2(env, tab);
 	if (ici == 0)
 	{
-		line = ft_strjoin(tab[1], "=");
-		line = ft_strjoin(line, tab[2]);
 		env = tmp;
-		ft_pushback(env, line);
+		ft_pushsetenv(env, tab[1], tab[2]);
 	}
 	env = tmp;
 	return (env);
@@ -66,7 +63,7 @@ int		ft_forunsetenv3(char *str)
 	if (ft_strcmp(str, "PATH") == 0)
 	{
 		ft_printf("\033[031mNO FREE PATH PLEASE !!!!!!!!\033[0m\n");
-		exit(0);
+		return (1);
 	}
 	return (0);
 }
@@ -78,7 +75,10 @@ t_env	*ft_forunsetenv2(t_env *tmp2)
 	if (tmp2->prev != NULL)
 	{
 		tmp3 = tmp2->prev;
-		tmp3->next = tmp2->next;
+		if (tmp2->next != NULL)
+			tmp3->next = tmp2->next;
+		if (tmp2->next == NULL)
+			tmp3->next = NULL;
 		tmp3->prev = tmp2->prev->prev;
 	}
 	else
@@ -91,10 +91,9 @@ t_env	*ft_forunsetenv2(t_env *tmp2)
 	if (tmp2->result != NULL)
 		free(tmp2->result);
 	free(tmp2);
+	tmp2 = NULL;
 	while (tmp3->prev != NULL)
-	{
 		tmp3 = tmp3->prev;
-	}
 	return (tmp3);
 }
 
