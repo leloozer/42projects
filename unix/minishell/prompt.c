@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:27:41 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/11 14:29:31 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/11 19:51:01 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		ft_forfree(char *path2, char **tab, int i)
 {
 	if (path2 != NULL)
 		free(path2);
-	if (tab)
+	if (tab != NULL)
 		ft_free(tab);
 	i++;
 	return (i);
@@ -50,26 +50,40 @@ char	*ft_else(char **path, char **tab, char **tabenv)
 	return (path2);
 }
 
+int		ft_space(char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if(str[i] != ' ')
+			return(1);
+		i++;
+	}
+	return(0);
+}
+
 void	ft_whileprompt(t_env *env, char **tabenv, char **path, char *path2)
 {
 	char	**cmd;
 	char	**tab;
 	int		i;
-	int		j;
 
 	while (42)
 	{
 		cmd = ft_cmd();
 		i = 0;
-		j = 0;
 		while (cmd[i])
 		{
-			tab = ft_strsplit(cmd[i], ' ');
-			if (ft_strcmp("env", tab[0]) == 0 && tab[1])
+			tab = NULL;
+			if (ft_space(cmd[i]) == 1)
+				tab = ft_strsplit(cmd[i], ' ');
+			if (tab && ft_strcmp("env", tab[0]) == 0 && tab[1])
 				tab = ft_envspe(tab);
-			if (ft_built(tab) == 1)
+			if (tab && ft_built(tab) == 1)
 				env = ft_gobuilt(env, tab, cmd[i]);
-			else if (ft_strcmp(tab[0], "exit") == 0)
+			else if ( tab && ft_strcmp(tab[0], "exit") == 0)
 				ft_exit(tab, cmd, path, env);
 			else
 				path2 = ft_else(path, tab, tabenv);
