@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/08 11:51:55 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/11 15:50:18 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/14 18:44:33 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int		ft_built(char **tab)
 {
 	if ((ft_strcmp(tab[0], "cd") == 0) || (ft_strcmp(tab[0], "env") == 0) ||
 	(ft_strcmp(tab[0], "unsetenv") == 0) || (ft_strcmp(tab[0], "setenv") == 0)
-			|| (ft_strcmp(tab[0], "echo") == 0))
+		|| (ft_strcmp(tab[0], "/usr/bin/env") == 0)
+		|| (ft_strcmp(tab[0], "echo") == 0))
 		return (1);
 	else
 		return (0);
@@ -29,10 +30,11 @@ t_env	*ft_gobuilt(t_env *env, char **tab, char *str)
 	if (ft_strcmp(tab[0], "setenv") == 0)
 		env = ft_forsetenv(env, tab);
 	if (ft_strcmp(tab[0], "echo") == 0)
-		ft_forecho(str);
+		ft_forecho(str, env);
 	if (ft_strcmp(tab[0], "cd") == 0)
 		ft_forcd(env, tab);
-	if (ft_strcmp(tab[0], "env") == 0)
+	if (ft_strcmp(tab[0], "env") == 0 ||
+			ft_strcmp(tab[0], "/usr/bin/env") == 0)
 		ft_forenv(env);
 	return (env);
 }
@@ -62,11 +64,11 @@ char	**ft_thepath(t_env *env)
 
 void	ft_exit(char **tab, char **cmd, char **path, t_env *env)
 {
-	if (tab != NULL)
+	if (tab != NULL && tab[0] != NULL)
 		ft_free(tab);
-	if (cmd != NULL)
+	if (cmd != NULL && tab[0] != NULL)
 		ft_free(cmd);
-	if (path != NULL)
+	if (path != NULL && path[0] != NULL)
 		ft_free(path);
 	ft_freeenv(env);
 	ft_printf("\033[033mCiao baby!\033[0m\n");

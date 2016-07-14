@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:33:22 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/11 15:44:33 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/14 17:31:07 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*ft_add(char *name, char *result)
 
 	i = 0;
 	j = 0;
-	len = ft_strlen(name) + ft_strlen(result) + 1;
+	len = ft_strlen(name) + ft_strlen(result);
 	src = (char *)malloc(sizeof(char) * len + 1);
 	while (name[i])
 	{

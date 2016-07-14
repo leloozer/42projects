@@ -6,65 +6,62 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/17 20:44:34 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/05/17 22:15:44 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/14 17:42:24 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-static size_t		ft_strlenws(char const *s, char c)
+size_t		get_size(const char *str, char c)
 {
-	size_t	result;
+	size_t	size;
+	size_t	i;
 
-	result = 0;
-	while (*s != c && *s)
+	size = 0;
+	while (*str)
 	{
-		result++;
-		s++;
+		i = 0;
+		while (str[i] != c && str[i])
+			++i;
+		size = i ? size + 1 : size;
+		str += i;
+		str = *str ? str + 1 : str;
 	}
-	return (result);
+	return (size);
 }
 
-static char			**ft_spliting(char const *s, char **newt, char c)
+char		**stuff_me(const char *str, char c, char **split)
 {
-	unsigned int	i;
-	int				x;
+	size_t		len;
+	char		**ptr;
 
-	i = 0;
-	x = 0;
-	while (s[i] != '\0')
+	ptr = split;
+	while (*str)
 	{
-		if (s[i] != c)
+		len = 0;
+		while (str[len] != c && str[len])
+			++len;
+		if (len)
 		{
-			newt[x++] = ft_strsub(s, i, ft_strlenws(&s[i], c));
-			i = i + ft_strlenws(&s[i], c);
+			*split = ft_strsub(str, 0, len);
+			++split;
 		}
-		else
-			i++;
+		str += len;
+		str = *str ? str + 1 : str;
 	}
-	return (newt);
+	return (ptr);
 }
 
-char				**ft_strsplit(char const *s, char c)
+char		**ft_strsplit(const char *str, char c)
 {
-	int		i;
-	int		t;
-	char	**newtab;
+	size_t		size;
+	char		**split;
 
-	i = 0;
-	t = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] != c && ((i != 0 && s[i - 1] == c) || i == 0))
-			t++;
-		i++;
-	}
-	newtab = (char**)(malloc(sizeof(newtab) * (t + 1)));
-	if (newtab == NULL)
+	size = get_size(str, c);
+	if (!(split = (char **)malloc(sizeof(char *) * (size + 1))))
 		return (NULL);
-	while (t != -1)
-		newtab[t--] = 0;
-	newtab = ft_spliting(s, newtab, c);
-	return (newtab);
+	split = stuff_me(str, c, split);
+	split[size] = 0;
+	return (split);
 }

@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 14:12:26 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/11 20:08:36 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/14 17:43:08 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,55 @@ void	ft_forenv(t_env *env)
 	env = tmp;
 }
 
-void	ft_forecho(char *line)
+char	*ft_mallocname(char *name, char *line, int k)
+{
+	int	j;
+
+	j = 0;
+	while (line[k] != ' ' && line[k] != '\0' && line[k] != '"')
+	{
+		k++;
+		j++;
+	}
+	name = (char *)malloc(sizeof(char) * j + 1);
+	return (name);
+}
+
+int		ft_echoenv(char *line, int i, t_env *env)
+{
+	t_env	*tmp;
+	char	*name;
+	int		j;
+	int		k;
+
+	j = 0;
+	tmp = env;
+	name = NULL;
+	k = i + 1;
+	name = ft_mallocname(name, line, k);
+	k = i + 1;
+	while (line[k] != ' ' && line[k] != '\0' && line[k] != '"')
+	{
+		name[j] = line[k];
+		k++;
+		j++;
+	}
+	name[j++] = '\0';
+	while (env)
+	{
+		if (ft_strcmp(name, env->name) == 0)
+		{
+			ft_printf(" %s", env->result);
+			return (k);
+		}
+		env = env->next;
+	}
+	if (name != NULL)
+		free(name);
+	return (i);
+}
+
+void	ft_forecho(char *line, t_env *env)
 {
 	int		i;
 	int		space;
@@ -48,6 +96,9 @@ void	ft_forecho(char *line)
 			ft_printf(" ");
 			space = 0;
 		}
+		if (line[i] == '$' && (line[i - 1] == ' ' || i == 0 ||
+					line[i - 1] == '"'))
+			i = ft_echoenv(line, i, env);
 		ft_printf("%c", line[i++]);
 	}
 	ft_printf("\n");
@@ -69,6 +120,7 @@ void	ft_forcd3(char *new, t_env *env, char *path, char **tab)
 			env = env->next;
 		}
 	}
+	free(new);
 }
 
 char	*ft_forcd2(char *home, char *path, char *oldpwd, char **tab)
@@ -95,7 +147,6 @@ char	*ft_forcd2(char *home, char *path, char *oldpwd, char **tab)
 		new = ft_strjoin(path, "/");
 		new = ft_strjoin(new, tab[1]);
 	}
-	free(home);
 	return (new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:23:30 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/11 15:10:54 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/14 12:16:19 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void				ft_pushsetenv(t_env *env, char *str, char *str2);
 
 void				ft_forcd(t_env *env, char **tab);
 void				ft_forenv(t_env *env);
-void				ft_forecho(char *line);
+void				ft_forecho(char *line, t_env *env);
 t_env				*ft_forsetenv(t_env *env, char **tab);
 t_env				*ft_forunsetenv(t_env *env, char **tab);
 

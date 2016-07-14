@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:27:41 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/11 19:51:01 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/14 18:44:18 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,18 @@ char	**ft_cmd(void)
 {
 	char	**cmd;
 	char	*line;
+	int		i;
 
 	ft_printf("\033[032m$FuckingShell>\033[0m ");
 	while (get_next_line(0, &line) == -1)
 	{
+	}
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '&')
+			line[i] = ';';
+		i++;
 	}
 	cmd = ft_strsplit(line, ';');
 	free(line);
@@ -55,13 +63,20 @@ int		ft_space(char *str)
 	int i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
-		if(str[i] != ' ')
-			return(1);
+		if (str[i] == '	')
+			str[i] = ' ';
 		i++;
 	}
-	return(0);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 void	ft_whileprompt(t_env *env, char **tabenv, char **path, char *path2)
@@ -83,7 +98,7 @@ void	ft_whileprompt(t_env *env, char **tabenv, char **path, char *path2)
 				tab = ft_envspe(tab);
 			if (tab && ft_built(tab) == 1)
 				env = ft_gobuilt(env, tab, cmd[i]);
-			else if ( tab && ft_strcmp(tab[0], "exit") == 0)
+			else if (tab && ft_strcmp(tab[0], "exit") == 0)
 				ft_exit(tab, cmd, path, env);
 			else
 				path2 = ft_else(path, tab, tabenv);

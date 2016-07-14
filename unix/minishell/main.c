@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:26:25 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/11 14:57:39 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/14 18:41:45 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	ft_free(char **tab)
 	i = 0;
 	while (tab[i])
 	{
-		if (tab[i] != NULL)
-			free(tab[i]);
+		free(tab[i]);
 		tab[i] = NULL;
 		i++;
 	}
+	tab = NULL;
 }
 
 void	ft_freeenv(t_env *env)
@@ -75,6 +75,24 @@ void	ft_pushback(t_env *env, char *line)
 	value = NULL;
 }
 
+void	ft_sighandler(int sign)
+{
+	if (sign == SIGINT)
+		return ;
+}
+
+void	ft_golst(char **e, int i, t_env *env)
+{
+	while (e[i])
+	{
+		if (i == 0)
+			ft_firstpushback(env, e[i]);
+		else
+			ft_pushback(env, e[i]);
+		i++;
+	}
+}
+
 int		main(int argc, char **argv, char **e)
 {
 	int		i;
@@ -85,19 +103,14 @@ int		main(int argc, char **argv, char **e)
 	(void)argc;
 	(void)argv;
 	env = (t_env *)malloc(sizeof(t_env));
+	if (signal(SIGINT, ft_sighandler) == SIG_ERR)
+		ft_printf("\033[031mERROR\033[0m\n");
 	if (e[i] == NULL)
 	{
 		ft_printf("\033[031mNO ENV\033[0m\n");
 		return (0);
 	}
-	while (e[i])
-	{
-		if (i == 0)
-			ft_firstpushback(env, e[i]);
-		else
-			ft_pushback(env, e[i]);
-		i++;
-	}
+	ft_golst(e, i, env);
 	tab = ft_envtab(env);
 	ft_prompt(env, tab);
 	return (0);
