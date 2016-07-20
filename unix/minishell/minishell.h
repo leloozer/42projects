@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:23:30 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/14 12:16:19 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/18 17:37:18 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ typedef struct		s_env
 
 void				ft_free(char **tab);
 void				ft_freeenv(t_env *env);
-void				ft_pushback(t_env *env, char *line);
-void				ft_firstpushback(t_env *env, char *line);
+t_env				*ft_pushback(t_env *env, char *line);
+t_env				*ft_firstpushback(t_env *env, char *line);
+char				**ft_cmd(void);
 
 void				ft_prompt(t_env *env, char **tabenv);
 int					ft_built(char **tab);
@@ -50,6 +51,7 @@ void				ft_forenv(t_env *env);
 void				ft_forecho(char *line, t_env *env);
 t_env				*ft_forsetenv(t_env *env, char **tab);
 t_env				*ft_forunsetenv(t_env *env, char **tab);
+int					ft_echoenv(char *line, int i, t_env *env);
 
 char				**ft_envtab(t_env *env);
 

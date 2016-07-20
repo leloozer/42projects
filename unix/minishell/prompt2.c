@@ -6,7 +6,7 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/08 11:51:55 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/14 18:44:33 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/20 15:25:18 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,12 @@ char	**ft_thepath(t_env *env)
 
 void	ft_exit(char **tab, char **cmd, char **path, t_env *env)
 {
-	if (tab != NULL && tab[0] != NULL)
+	(void)env;
+	if (tab != NULL && tab[0])
 		ft_free(tab);
-	if (cmd != NULL && tab[0] != NULL)
+	if (cmd != NULL && tab[0])
 		ft_free(cmd);
-	if (path != NULL && path[0] != NULL)
+	if (path != NULL && path[0])
 		ft_free(path);
 	ft_freeenv(env);
 	ft_printf("\033[033mCiao baby!\033[0m\n");

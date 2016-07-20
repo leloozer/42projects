@@ -6,33 +6,11 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/27 12:27:41 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/14 18:44:18 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/18 17:27:25 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**ft_cmd(void)
-{
-	char	**cmd;
-	char	*line;
-	int		i;
-
-	ft_printf("\033[032m$FuckingShell>\033[0m ");
-	while (get_next_line(0, &line) == -1)
-	{
-	}
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == '&')
-			line[i] = ';';
-		i++;
-	}
-	cmd = ft_strsplit(line, ';');
-	free(line);
-	return (cmd);
-}
 
 int		ft_forfree(char *path2, char **tab, int i)
 {

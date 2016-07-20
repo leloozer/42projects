@@ -6,71 +6,16 @@
 /*   By: mszczesn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 14:12:26 by mszczesn          #+#    #+#             */
-/*   Updated: 2016/07/14 17:43:08 by mszczesn         ###   ########.fr       */
+/*   Updated: 2016/07/20 13:35:11 by mszczesn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_forenv(t_env *env)
+int		ft_printspace(void)
 {
-	t_env *tmp;
-
-	tmp = env;
-	while (env)
-	{
-		ft_printf("%s=%s\n", env->name, env->result);
-		env = env->next;
-	}
-	env = tmp;
-}
-
-char	*ft_mallocname(char *name, char *line, int k)
-{
-	int	j;
-
-	j = 0;
-	while (line[k] != ' ' && line[k] != '\0' && line[k] != '"')
-	{
-		k++;
-		j++;
-	}
-	name = (char *)malloc(sizeof(char) * j + 1);
-	return (name);
-}
-
-int		ft_echoenv(char *line, int i, t_env *env)
-{
-	t_env	*tmp;
-	char	*name;
-	int		j;
-	int		k;
-
-	j = 0;
-	tmp = env;
-	name = NULL;
-	k = i + 1;
-	name = ft_mallocname(name, line, k);
-	k = i + 1;
-	while (line[k] != ' ' && line[k] != '\0' && line[k] != '"')
-	{
-		name[j] = line[k];
-		k++;
-		j++;
-	}
-	name[j++] = '\0';
-	while (env)
-	{
-		if (ft_strcmp(name, env->name) == 0)
-		{
-			ft_printf(" %s", env->result);
-			return (k);
-		}
-		env = env->next;
-	}
-	if (name != NULL)
-		free(name);
-	return (i);
+	ft_printf(" ");
+	return (0);
 }
 
 void	ft_forecho(char *line, t_env *env)
@@ -85,17 +30,14 @@ void	ft_forecho(char *line, t_env *env)
 	i++;
 	while (line[i])
 	{
-		while (line[i] == '"' || line[i] == '\'' || line[i] == ' ')
+		while (line[i] == '"' || line[i] == '\0' || line[i] == ' ')
 		{
 			if (line[i] == ' ')
 				space = 1;
 			i++;
 		}
 		if (space == 1)
-		{
-			ft_printf(" ");
-			space = 0;
-		}
+			space = ft_printspace();
 		if (line[i] == '$' && (line[i - 1] == ' ' || i == 0 ||
 					line[i - 1] == '"'))
 			i = ft_echoenv(line, i, env);
@@ -120,7 +62,6 @@ void	ft_forcd3(char *new, t_env *env, char *path, char **tab)
 			env = env->next;
 		}
 	}
-	free(new);
 }
 
 char	*ft_forcd2(char *home, char *path, char *oldpwd, char **tab)
