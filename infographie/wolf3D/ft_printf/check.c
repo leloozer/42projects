@@ -63,9 +63,7 @@ int	ft_checkwidth(t_flag *tmp, char *str, int i)
 int	ft_checkprecision(t_flag *tmp, char *str, int i)
 {
 	int		prec;
-	int		check;
 
-	check = 0;
 	if (str[i] == '.')
 	{
 		i++;

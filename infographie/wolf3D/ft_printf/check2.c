@@ -52,7 +52,7 @@ int	ft_checkl(t_flag *tmp, char *str, int i)
 	{
 		modif++;
 		i++;
-		if (str[i] != 'l' & str[i - 1] == 'l')
+		if (str[i] != 'l' && str[i - 1] == 'l')
 		{
 			modif = modif % 2 + 2;
 			if (modif == 3)

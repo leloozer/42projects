@@ -12,11 +12,8 @@
 
 #include "w3d.h"
 
-int	ft_mouse(int x, int y, t_raytracer *raytracer)
+int	ft_mouse(int x, int y)
 {
-	int tmp;
-
-	tmp = raytracer->size;
 	if (x >= 5 && x <= 16 && y <= -8 && y >= -11)
 		exit(0);
 	return (0);

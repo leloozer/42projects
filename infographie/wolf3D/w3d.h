@@ -78,7 +78,7 @@ typedef struct	s_raytracer
 }				t_raytracer;
 
 int				ft_key(int k, t_raytracer *raytracer);
-int				ft_mouse(int x, int y, t_raytracer *raytracer);
+int				ft_mouse(int x, int y);
 
 void			ft_initraytracer(t_raytracer *raytracer);
 void			ft_ray_posanddir(t_raytracer *raytracer, int x);
